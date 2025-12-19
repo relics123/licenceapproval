@@ -1,0 +1,157 @@
+############################################
+# OS / Editor files
+############################################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+*.swp
+*.swo
+*.tmp
+
+############################################
+# Visual Studio
+############################################
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.opendb
+
+############################################
+# Visual Studio Code
+############################################
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+############################################
+# JetBrains Rider
+############################################
+.idea/
+*.sln.iml
+
+############################################
+# Build results
+############################################
+bin/
+obj/
+out/
+
+############################################
+# .NET Core
+############################################
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+############################################
+# ASP.NET Scaffolding
+############################################
+ScaffoldingReadMe.txt
+
+############################################
+# NuGet
+############################################
+*.nupkg
+*.snupkg
+.nuget/packages/
+.nuget/cache/
+.nuget/plugins-cache/
+
+############################################
+# Logs
+############################################
+*.log
+logs/
+**/logs/
+
+############################################
+# User secrets / sensitive files
+############################################
+secrets.json
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.Local.json
+
+############################################
+# Environment variables
+############################################
+.env
+.env.*
+
+############################################
+# Test Results
+############################################
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+############################################
+# Docker
+############################################
+docker-compose.override.yml
+**/Dockerfile.debug
+**/docker-compose.debug.yml
+
+############################################
+# EF Core
+############################################
+**/Migrations/*.Designer.cs
+**/Migrations/*.resx
+
+############################################
+# Azure / Cloud
+############################################
+.azure/
+serviceDependencies.json
+serviceDependencies.local.json
+
+############################################
+# Node (for SPA inside ASP.NET)
+############################################
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+############################################
+# Publish outputs
+############################################
+publish/
+wwwroot/lib/
+
+############################################
+# Coverage tools
+############################################
+coverage/
+.coverage/
+.opencover.xml
+
+############################################
+# Temporary files
+############################################
+*.tmp
+*.bak
+*.old
+
+############################################
+# ReSharper
+############################################
+_ReSharper*/
+*.DotSettings.user
+
+############################################
+# SonarQube
+############################################
+.sonarqube/
+
+############################################
+# Generated files
+############################################
+GeneratedFiles/
