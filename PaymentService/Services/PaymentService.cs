@@ -8,10 +8,17 @@ namespace PaymentService.Services
     public class PaymentService : IPaymentService
     {
         private readonly AppDbContext _context;
+        private readonly ILicenseServiceClient _licenseServiceClient;
+        private readonly ILogger<PaymentService> _logger;
 
-        public PaymentService(AppDbContext context)
+        public PaymentService(
+            AppDbContext context,
+            ILicenseServiceClient licenseServiceClient,
+            ILogger<PaymentService> logger)
         {
             _context = context;
+            _licenseServiceClient = licenseServiceClient;
+            _logger = logger;
         }
 
         public async Task<PaymentResponse> MakePaymentAsync(PaymentRequest request)
@@ -41,12 +48,29 @@ namespace PaymentService.Services
             _context.Payments.Add(payment);
             await _context.SaveChangesAsync();
 
+            _logger.LogInformation(
+                "Payment completed. TransactionId: {TransactionId}, LicenseId: {LicenseId}",
+                transactionId, request.LicenseId);
+
+            // ✨ NEW: Call LicenseService to update payment status
+            var licenseUpdated = await _licenseServiceClient.UpdateLicensePaymentStatusAsync(
+                request.LicenseId,
+                request.TenantId);
+
+            if (!licenseUpdated)
+            {
+                _logger.LogWarning(
+                    "Payment succeeded but failed to update license {LicenseId}. Manual intervention may be needed.",
+                    request.LicenseId);
+            }
+
             return new PaymentResponse
             {
                 Success = true,
                 Message = "Payment successfully completed",
                 TransactionId = transactionId,
-                PaymentDate = payment.PaymentDate
+                PaymentDate = payment.PaymentDate,
+                LicenseUpdated = licenseUpdated // NEW: Indicate if license was updated
             };
         }
 
@@ -61,9 +85,7 @@ namespace PaymentService.Services
             return new PaymentResponse
             {
                 TransactionId = payment.TransactionId,
-                
                 Status = payment.Status,
-               
                 PaymentDate = payment.PaymentDate
             };
         }

@@ -111,7 +111,8 @@ namespace IdentityService.Services
             Email = user.Email,
             FullName = user.FullName,
             TenantCode = tenant.TenantCode,
-            Role = user.UserRole.Name
+            Role = user.UserRole.Name,
+            TenantId = user.TenantId
         }
     };
 }
@@ -180,6 +181,7 @@ namespace IdentityService.Services
                 {
                     UserId = user.Id,
                     Username = user.Username,
+                    TenantId = user.TenantId,
                     Email = user.Email,
                     FullName = user.FullName,
                     TenantCode = user.Tenant.TenantCode,

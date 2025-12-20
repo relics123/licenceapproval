@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using LicenseService.Data;
 using System.Reflection;
+using Hangfire;
+using Hangfire.PostgreSql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHangfire(config =>
+    config.UsePostgreSqlStorage(connectionString));
+
+builder.Services.AddHangfireServer();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,5 +51,7 @@ app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHangfireDashboard();
 
 app.Run();

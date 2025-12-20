@@ -1,0 +1,186 @@
+@model FrontEnd.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    var user = Model.CurrentUser;
+    var isAdmin = user?.Role == "TenantAdmin";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">Dashboard</h2>
+    </div>
+</div>
+
+@if (Model.ActiveLicense != null)
+{
+    var daysUntilExpiry = (Model.ActiveLicense.ExpiryDate - DateTime.UtcNow).Days;
+    var alertClass = daysUntilExpiry <= 7 ? "alert-danger" : (daysUntilExpiry <= 30 ? "alert-warning" : "alert-info");
+    
+    <div class="alert @alertClass alert-dismissible fade show" role="alert">
+        <strong>Active License:</strong> @Model.ActiveLicense.LicenseNumber
+        <span class="ms-3">
+            <strong>Expires on:</strong> @Model.ActiveLicense.ExpiryDate.ToString("dd-MMM-yyyy")
+            (@daysUntilExpiry days remaining)
+        </span>
+        <a asp-controller="License" asp-action="Download" asp-route-licenseId="@Model.ActiveLicense.Id" class="ms-3 alert-link">
+            Download License
+        </a>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Licenses</h5>
+                <h2 class="mb-0">@Model.Stats.TotalLicenses</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Active Licenses</h5>
+                <h2 class="mb-0">@Model.Stats.ActiveLicenses</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Pending Payment</h5>
+                <h2 class="mb-0">@Model.Stats.PendingPayment</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Expired</h5>
+                <h2 class="mb-0">@Model.Stats.ExpiredLicenses</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Recent Licenses</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.RecentLicenses.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>License Number</th>
+                                    <th>Applicant</th>
+                                    <th>Status</th>
+                                    <th>Application Date</th>
+                                    <th>Expiry Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var license in Model.RecentLicenses)
+                                {
+                                    <tr>
+                                        <td><strong>@license.LicenseNumber</strong></td>
+                                        <td>@license.ApplicantName</td>
+                                        <td>
+                                            @if (license.Status == "Approved")
+                                            {
+                                                <span class="badge bg-success">@license.Status</span>
+                                            }
+                                            else if (license.Status == "PaymentPending")
+                                            {
+                                                <span class="badge bg-warning text-dark">Pending Payment</span>
+                                            }
+                                            else if (license.Status == "Expired")
+                                            {
+                                                <span class="badge bg-danger">@license.Status</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">@license.Status</span>
+                                            }
+                                        </td>
+                                        <td>@license.ApplicationDate.ToString("dd-MMM-yyyy")</td>
+                                        <td>@license.ExpiryDate.ToString("dd-MMM-yyyy")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a asp-controller="License" asp-action="ViewLicenses" class="btn btn-outline-primary">View All Licenses</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <p class="text-muted mb-3">No licenses found</p>
+                        @if (isAdmin)
+                        {
+                            <a asp-controller="License" asp-action="Generate" class="btn btn-primary">Generate New License</a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    @if (isAdmin)
+                    {
+                        <a asp-controller="License" asp-action="Generate" class="btn btn-primary">
+                            Generate New License
+                        </a>
+                    }
+                    <a asp-controller="License" asp-action="ViewLicenses" class="btn btn-outline-primary">
+                        View All Licenses
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Account Information</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-5">Name:</dt>
+                    <dd class="col-sm-7">@user.FullName</dd>
+
+                    <dt class="col-sm-5">Email:</dt>
+                    <dd class="col-sm-7">@user.Email</dd>
+
+                    <dt class="col-sm-5">Role:</dt>
+                    <dd class="col-sm-7">
+                        @if (isAdmin)
+                        {
+                            <span class="badge bg-primary">Admin</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">User</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-5">Tenant:</dt>
+                    <dd class="col-sm-7"><code>@user.TenantCode</code></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

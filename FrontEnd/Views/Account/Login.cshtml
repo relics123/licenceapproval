@@ -1,0 +1,47 @@
+@model FrontEnd.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <h2 class="card-title text-center mb-4">Sign In</h2>
+                
+                <form asp-action="Login" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Username" class="form-label">Username</label>
+                        <input asp-for="Username" class="form-control" placeholder="Enter your username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password</label>
+                        <input asp-for="Password" class="form-control" placeholder="Enter your password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label asp-for="TenantCode" class="form-label">Tenant Code</label>
+                        <input asp-for="TenantCode" class="form-control" placeholder="Enter your tenant code" />
+                        <span asp-validation-for="TenantCode" class="text-danger"></span>
+                        <small class="form-text text-muted">You received this code when registering</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+                    
+                    <div class="text-center">
+                        <p class="mb-0">Don't have an account? <a asp-action="Register">Register here</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,44 @@
+@model FrontEnd.Models.PaymentViewModel
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <h2 class="card-title text-center mb-4">Payment</h2>
+                
+                <div class="alert alert-success">
+                    <strong>License Application Created!</strong>
+                    <p class="mb-0">Please proceed with payment to activate your license.</p>
+                </div>
+
+                <dl class="row mb-4">
+                    <dt class="col-sm-5">License Number:</dt>
+                    <dd class="col-sm-7"><strong>@Model.LicenseNumber</strong></dd>
+
+                    <dt class="col-sm-5">Applicant:</dt>
+                    <dd class="col-sm-7">@Model.ApplicantName</dd>
+
+                    <dt class="col-sm-5">Company:</dt>
+                    <dd class="col-sm-7">@Model.CompanyName</dd>
+
+                    <dt class="col-sm-5">Amount:</dt>
+                    <dd class="col-sm-7"><strong class="text-primary">₹@Model.Amount.ToString("N2")</strong></dd>
+                </dl>
+
+                <div class="alert alert-warning">
+                    <small><strong>Note:</strong> This is a demo payment. Click "Pay Now" to simulate successful payment.</small>
+                </div>
+
+                <form asp-action="ProcessPayment" method="post">
+                    <input type="hidden" name="licenseId" value="@Model.LicenseId" />
+                    <button type="submit" class="btn btn-success w-100 mb-2">Pay Now</button>
+                </form>
+                
+                <a asp-controller="Dashboard" asp-action="Index" class="btn btn-outline-secondary w-100">Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

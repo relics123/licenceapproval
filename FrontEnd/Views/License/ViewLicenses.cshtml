@@ -1,0 +1,99 @@
+@model List<FrontEnd.Models.LicenseInfo>
+@{
+    ViewData["Title"] = "View Licenses";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>All Licenses</h2>
+            @if (FrontEnd.Helpers.SessionHelper.GetUserInfo(Context.Session)?.Role == "TenantAdmin")
+            {
+                <a asp-action="Generate" class="btn btn-primary">Generate New License</a>
+            }
+        </div>
+    </div>
+</div>
+
+@if (Model.Any())
+{
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>License Number</th>
+                            <th>Applicant Name</th>
+                            <th>Company</th>
+                            <th>GST Number</th>
+                            <th>City</th>
+                            <th>Status</th>
+                            <th>Application Date</th>
+                            <th>Expiry Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var license in Model)
+                        {
+                            <tr>
+                                <td><strong>@license.LicenseNumber</strong></td>
+                                <td>@license.ApplicantName</td>
+                                <td>@license.CompanyName</td>
+                                <td><code>@license.GstNumber</code></td>
+                                <td>@license.City</td>
+                                <td>
+                                    @if (license.Status == "Approved")
+                                    {
+                                        <span class="badge bg-success">@license.Status</span>
+                                    }
+                                    else if (license.Status == "PaymentPending")
+                                    {
+                                        <span class="badge bg-warning text-dark">Pending Payment</span>
+                                    }
+                                    else if (license.Status == "Expired")
+                                    {
+                                        <span class="badge bg-danger">@license.Status</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@license.Status</span>
+                                    }
+                                </td>
+                                <td>@license.ApplicationDate.ToString("dd-MMM-yyyy")</td>
+                                <td>@license.ExpiryDate.ToString("dd-MMM-yyyy")</td>
+                                <td>
+                                    @if (license.Status == "Approved")
+                                    {
+                                        <a asp-action="Download" asp-route-licenseId="@license.Id" class="btn btn-sm btn-primary">
+                                            Download
+                                        </a>
+                                    }
+                                    else if (license.Status == "PaymentPending")
+                                    {
+                                        <a asp-action="Payment" asp-route-licenseId="@license.Id" class="btn btn-sm btn-warning">
+                                            Pay Now
+                                        </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="card shadow-sm">
+        <div class="card-body text-center py-5">
+            <p class="text-muted mb-3">No licenses found</p>
+            @if (FrontEnd.Helpers.SessionHelper.GetUserInfo(Context.Session)?.Role == "TenantAdmin")
+            {
+                <a asp-action="Generate" class="btn btn-primary">Generate New License</a>
+            }
+        </div>
+    </div>
+}

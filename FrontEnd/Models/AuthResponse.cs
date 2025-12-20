@@ -1,4 +1,4 @@
-namespace IdentityService.DTOs
+namespace FrontEnd.Models
 {
     public class AuthResponse
     {
@@ -12,11 +12,11 @@ namespace IdentityService.DTOs
     {
         public int UserId { get; set; }
         public string Username { get; set; }
+
+        public int TenantId { get; set; } // ✅ ADD
         public string Email { get; set; }
         public string FullName { get; set; }
         public string TenantCode { get; set; }
-
-         public int TenantId { get; set; }
         public string Role { get; set; }
     }
 }

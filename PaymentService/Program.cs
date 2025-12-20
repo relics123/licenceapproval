@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PaymentService.Data;
+using PaymentService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,9 @@ var connectionString =  builder.Configuration.GetConnectionString("DefaultConnec
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString));
 
+builder.Services.AddHttpClient<ILicenseServiceClient, LicenseServiceClient>();
+
+builder.Services.AddScoped<IPaymentService, PaymentService.Services.PaymentService>();
 
 // Add CORS
 builder.Services.AddCors(options =>

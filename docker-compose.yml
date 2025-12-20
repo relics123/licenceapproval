@@ -1,65 +1,93 @@
-version: '3.8'
-
 services:
   postgres-identity:
     image: postgres:15
     container_name: postgres_identity
     environment:
       POSTGRES_DB: identitydb
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_USER: identityuser
+      POSTGRES_PASSWORD: SecurePass123!
     ports:
       - "5432:5432"
     volumes:
       - identity_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U identityuser -d identitydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   postgres-license:
     image: postgres:15
     container_name: postgres_license
     environment:
       POSTGRES_DB: licensedb
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_USER: licenseuser
+      POSTGRES_PASSWORD: SecurePass123!
     ports:
       - "5433:5432"
     volumes:
       - license_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U licenseuser -d licensedb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   postgres-payment:
     image: postgres:15
     container_name: postgres_payment
     environment:
       POSTGRES_DB: paymentdb
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_USER: paymentuser
+      POSTGRES_PASSWORD: SecurePass123!
     ports:
       - "5434:5432"
     volumes:
       - payment_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U paymentuser -d paymentdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   postgres-document:
     image: postgres:15
     container_name: postgres_document
     environment:
       POSTGRES_DB: documentdb
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_USER: documentuser
+      POSTGRES_PASSWORD: SecurePass123!
     ports:
       - "5435:5432"
     volumes:
       - document_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U documentuser -d documentdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   postgres-notification:
     image: postgres:15
     container_name: postgres_notification
     environment:
       POSTGRES_DB: notificationdb
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_USER: notificationuser
+      POSTGRES_PASSWORD: SecurePass123!
     ports:
       - "5436:5432"
     volumes:
       - notification_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U notificationuser -d notificationdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
 volumes:
   identity_data:
