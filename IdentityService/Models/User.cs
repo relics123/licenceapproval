@@ -16,6 +16,6 @@ namespace IdentityService.Models
         public Tenant Tenant { get; set; }
         
         public int RoleId { get; set; }
-        public UserRole Role { get; set; }
+        public UserRole UserRole { get; set; }
     }
 }
