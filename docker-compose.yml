@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  postgres-identity:
+    image: postgres:15
+    container_name: postgres_identity
+    environment:
+      POSTGRES_DB: identitydb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5432:5432"
+    volumes:
+      - identity_data:/var/lib/postgresql/data
+
+  postgres-license:
+    image: postgres:15
+    container_name: postgres_license
+    environment:
+      POSTGRES_DB: licensedb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5433:5432"
+    volumes:
+      - license_data:/var/lib/postgresql/data
+
+  postgres-payment:
+    image: postgres:15
+    container_name: postgres_payment
+    environment:
+      POSTGRES_DB: paymentdb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5434:5432"
+    volumes:
+      - payment_data:/var/lib/postgresql/data
+
+  postgres-document:
+    image: postgres:15
+    container_name: postgres_document
+    environment:
+      POSTGRES_DB: documentdb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5435:5432"
+    volumes:
+      - document_data:/var/lib/postgresql/data
+
+  postgres-notification:
+    image: postgres:15
+    container_name: postgres_notification
+    environment:
+      POSTGRES_DB: notificationdb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5436:5432"
+    volumes:
+      - notification_data:/var/lib/postgresql/data
+
+volumes:
+  identity_data:
+  license_data:
+  payment_data:
+  document_data:
+  notification_data:
