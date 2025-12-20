@@ -1,10 +1,11 @@
 # A microservices-based application for managing professional licenses 
 
-# Tenant Visit Home Page
-# Tenant Login or Register
-# Tenant Generate Licence
-# Tenant get Email if License Expiring
-# Tenang can download Licence
+# UI FLOW
+  - Tenant Visit Home Page
+  - Tenant Login or Register
+  - Tenant Generate Licence
+  - Tenant get Email if License Expiring
+  - Tenang can download Licence
 
 
 ## Technology Stack
@@ -14,6 +15,8 @@
 - Entity Framework Core
 - JWT Authentication
 - Docker & Docker Compose
+
+
 
 
 ## Getting Started
@@ -31,8 +34,20 @@
 docker-compose up -d
 ```
 
+
+
 3. Run database migrations (coming in next steps)
 4. Start services
+
+# MASTER DATA
+
+ - Identity Service DB
+```
+INSERT INTO "Roles" ("Id", "Name", "Description") VALUES 
+(1, 'TenantAdmin', 'Administrator of the tenant'),
+(2, 'TenantUser', 'Regular user of the tenant');
+
+```
 
 # Design
 # Identity Service - this will take care of user authentication and authorization
