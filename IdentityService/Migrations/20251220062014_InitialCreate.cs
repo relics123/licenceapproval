@@ -57,7 +57,6 @@ namespace IdentityService.Migrations
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TenantId = table.Column<int>(type: "integer", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: false),
                     UserRoleId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

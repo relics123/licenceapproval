@@ -83,9 +83,6 @@ namespace IdentityService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("TenantId")
                         .HasColumnType("integer");
 
